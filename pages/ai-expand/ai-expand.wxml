@@ -28,16 +28,25 @@
         已选择：{{getSceneName(selectedScene)}}
       </view>
       <button class="generate-btn" bindtap="generateQuestions" loading="{{isGenerating}}">
-        🤖 AI生成3道题目
+        🤖 AI生成{{aiGenerateCount}}道题目
       </button>
       <view class="message" wx:if="{{message}}">{{message}}</view>
+    </view>
+
+    <!-- 赞助区域 -->
+    <view class="sponsor-section">
+      <view class="sponsor-title">💝 赞助开发者</view>
+      <view class="sponsor-desc">如果这个项目对你有帮助，欢迎赞助支持</view>
+      <button class="sponsor-btn" bindtap="sponsor" type="primary" size="mini">
+        ❤️ 赞助 ¥{{sponsorAmount}}
+      </button>
     </view>
 
     <view class="tips-section">
       <view class="tips-title">说明</view>
       <view class="tips-item">• AI将根据已有题目生成相似但不重复的新题</view>
       <view class="tips-item">• 生成的题目会自动添加到对应场景</view>
-      <view class="tips-item">• 每次生成3道题目，节约成本</view>
+      <view class="tips-item">• 每次生成{{aiGenerateCount}}道题目，节约成本</view>
     </view>
   </view>
 </view>

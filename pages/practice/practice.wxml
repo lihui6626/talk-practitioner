@@ -122,4 +122,30 @@
       <button class="btn-primary" bindtap="nextQuestion">继续练习</button>
     </view>
   </view>
+
+  <!-- 所有题目完成提示 -->
+  <view class="all-done-section" wx:if="{{isAllDone}}">
+    <view class="all-done-card">
+      <view class="all-done-icon">🎉</view>
+      <view class="all-done-title">太棒了！</view>
+      <view class="all-done-desc">你已经完成了当前场景的全部 {{totalQuestions}} 道题目</view>
+      
+      <view class="ai-expand-prompt">
+        <view class="ai-expand-icon">🤖</view>
+        <view class="ai-expand-text">
+          <view class="ai-expand-title">解锁更多练习</view>
+          <view class="ai-expand-desc">让 AI 为你生成更多练习题目</view>
+        </view>
+      </view>
+      
+      <view class="action-buttons">
+        <button class="btn-secondary" bindtap="goBack">返回</button>
+        <button class="btn-ai {{isGeneratingAI ? 'loading' : ''}}" 
+                bindtap="expandWithAI"
+                disabled="{{isGeneratingAI}}">
+          {{isGeneratingAI ? '生成中...' : 'AI扩展题库'}}
+        </button>
+      </view>
+    </view>
+  </view>
 </view>

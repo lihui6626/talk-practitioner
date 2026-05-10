@@ -1,4 +1,9 @@
-// ai-expand.js
+// AI每次生成的题目数量（可调整）
+const AI_GENERATE_COUNT = 1
+
+// 赞助金额（单位：元）
+const SPONSOR_AMOUNT = 0.99
+
 const scenesDaily = [
   { id: 'elevator', name: '电梯偶遇', icon: '🚪' },
   { id: 'pantry', name: '茶水间闲聊', icon: '☕' },
@@ -21,10 +26,16 @@ Page({
     selectedScene: null,
     isGenerating: false,
     generatedCount: 0,
-    message: ''
+    message: '',
+    aiGenerateCount: AI_GENERATE_COUNT,
+    sponsorAmount: SPONSOR_AMOUNT
   },
 
   onLoad() {
+    // 初始化云开发（使用动态环境）
+    wx.cloud.init({
+      traceUser: true
+    })
     this.loadStats()
   },
 
@@ -75,7 +86,7 @@ Page({
     
     wx.showModal({
       title: '确认生成',
-      content: `确定要为"${this.getSceneName(selectedScene)}"场景生成3道AI题目吗？`,
+      content: `确定要为"${this.getSceneName(selectedScene)}"场景生成${AI_GENERATE_COUNT}道AI题目吗？`,
       success: async (res) => {
         if (res.confirm) {
           await this.doGenerate()
@@ -123,5 +134,55 @@ Page({
 
   goBack() {
     wx.navigateBack()
+  },
+
+  // 赞助功能
+  async sponsor() {
+    const amount = this.data.sponsorAmount
+
+    wx.showModal({
+      title: '确认赞助',
+      content: `确定赞助 ¥${amount} 吗？`,
+      success: async (res) => {
+        if (res.confirm) {
+          await this.doSponsor(amount)
+        }
+      }
+    })
+  },
+
+  async doSponsor(amount) {
+    wx.showLoading({ title: '正在调起支付...' })
+
+    try {
+      // 调用云函数获取支付参数
+      const result = await wx.cloud.callFunction({
+        name: 'sponsor',
+        data: { totalFee: Math.round(amount * 100) } // 转换为分
+      })
+
+      wx.hideLoading()
+
+      if (result.result.success) {
+        // 调起微信支付
+        const paymentResult = await wx.requestPayment({
+          timeStamp: result.result.timeStamp,
+          nonceStr: result.result.nonceStr,
+          package: `prepay_id=${result.result.prepayId}`,
+          signType: 'RSA',
+          paySign: result.result.sign
+        })
+
+        if (paymentResult.errMsg === 'requestPayment:ok') {
+          wx.showToast({ title: '感谢您的赞助！', icon: 'success' })
+        }
+      } else {
+        wx.showToast({ title: result.result.message || '支付失败', icon: 'none' })
+      }
+    } catch (err) {
+      wx.hideLoading()
+      console.error('赞助失败:', err)
+      wx.showToast({ title: '支付失败，请重试', icon: 'none' })
+    }
   }
 })

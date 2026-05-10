@@ -4,8 +4,7 @@
     "pages/daily/daily",
     "pages/workplace/workplace",
     "pages/practice/practice",
-    "pages/result/result",
-    "pages/ai-expand/ai-expand"
+    "pages/result/result"
   ],
   "window": {
     "navigationBarTitleText": "接话与逻辑表达练习器",

@@ -32,19 +32,6 @@
       </view>
       <view class="arrow">→</view>
     </view>
-
-    <view class="module-card ai-card" bindtap="goToAIExpand">
-      <view class="module-icon ai-icon">🤖</view>
-      <view class="module-info">
-        <view class="module-title">AI扩展题库</view>
-        <view class="module-desc">AI生成更多练习题目</view>
-        <view class="module-meta">
-          <text class="tag tag-blue">AI赋能</text>
-          <text class="tag">持续更新</text>
-        </view>
-      </view>
-      <view class="arrow">→</view>
-    </view>
   </view>
 
   <view class="tip-section">
