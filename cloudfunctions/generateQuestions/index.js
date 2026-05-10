@@ -1,149 +1,145 @@
 // 云函数入口文件
 const cloud = require('wx-server-sdk')
+const https = require('https')
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV })
 
 const db = cloud.database()
-
-// 题库集合名称
 const QUESTIONS_COLLECTION = 'questions'
 
-// 调用AI生成题目的提示词模板
-function buildPrompt(existingQuestions, module, scene) {
-  const sceneNames = {
-    elevator: '电梯偶遇',
-    pantry: '茶水间闲聊',
-    canteen: '食堂搭话',
-    corridor: '走廊相遇',
-    meeting: '会议发言',
-    lunch: '午饭邀约',
-    dining: '商务餐',
-    report: '向上汇报',
-    review: '需求评审',
-    interview: '面试追问',
-    'cross-team': '跨部门协作',
-    conflict: '技术争议',
-    performance: '绩效面谈'
-  }
-
-  const sceneName = sceneNames[scene] || scene
-
-  return `你是一个专业的职场沟通培训师。请为"${sceneName}"场景生成3道高质量的接话练习题。
-
-要求：
-1. 每道题包含：situation（场景情境，60字内）、options（含4个选项，ABCD各一个）
-2. 选项必须有明显梯度：A最差（2分）、B一般（5分）、C良好（8分）、D最优（10分）
-3. 每个选项包含：content（回答内容，30字内）、analysis（详细分析，80字内）
-4. 答案要有区分度，高分答案要有真正的情商/逻辑亮点
-
-请以JSON数组格式返回，格式如下：
-[
-  {
-    "situation": "情境描述",
-    "options": [
-      {"key": "A", "content": "回答", "score": 2, "analysis": "分析"},
-      {"key": "B", "content": "回答", "score": 5, "analysis": "分析"},
-      {"key": "C", "content": "回答", "score": 8, "analysis": "分析"},
-      {"key": "D", "content": "回答", "score": 10, "analysis": "分析"}
-    ],
-    "tips": "练习要点，40字内"
-  }
-]
-
-注意：必须生成正好3道题，返回纯JSON，不要其他内容。`
-}
-
-// 云函数入口
-exports.main = async (event, context) => {
-  const { module, scene, count = 3 } = event
-
-  try {
-    // 1. 获取该场景已有的题目（用于去重提示）
-    const existing = await db.collection(QUESTIONS_COLLECTION)
-      .where({ module, scene })
-      .limit(10)
-      .get()
-
-    // 2. 构建提示词
-    const prompt = buildPrompt(existing.data, module, scene)
-
-    // 3. 调用AI（这里使用模拟，实际需要接入AI API）
-    // 注意：微信云函数不支持直接调用外部HTTP API，需要通过其他方式
-    // 可以考虑：
-    // - 使用云托管部署AI服务
-    // - 使用云函数HTTP请求（需要配置白名单）
-    // - 使用第三方AI SDK（如果支持）
-    
-    // 临时方案：返回一个提示，说明需要配置AI
-    return {
-      success: false,
-      message: '云函数AI调用需要配置，请先设置AI API密钥或使用云托管部署AI服务',
-      prompt: prompt,
-      hint: '可选方案：1. 腾讯云API网关 + 云函数 2. 云托管部署AI服务 3. 使用微信云托管'
+// 调用AI API
+async function callAI(prompt, apiKey) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      hostname: 'api.deepseek.com',
+      port: 443,
+      path: '/chat/completions',
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`
+      }
     }
 
-    // 实际AI调用代码（配置好AI后启用）：
-    /*
-    const AI_API_URL = '你的AI接口地址'
-    const AI_API_KEY = '你的API密钥'
-    
-    const response = await cloud.cloudCallContainer({
-      containerUri: AI_API_URL,
-      method: 'POST',
-      header: { 'Authorization': `Bearer ${AI_API_KEY}` },
-      body: { prompt }
+    const body = {
+      model: 'deepseek-chat',
+      messages: [{ role: 'user', content: prompt }],
+      temperature: 0.8,
+      max_tokens: 2000
+    }
+
+    const req = https.request(options, (res) => {
+      let data = ''
+      res.on('data', chunk => data += chunk)
+      res.on('end', () => {
+        try {
+          resolve(JSON.parse(data))
+        } catch (e) {
+          reject(new Error('AI响应解析失败'))
+        }
+      })
     })
-    
-    const questions = JSON.parse(response.data)
-    
-    // 4. 保存到数据库
+
+    req.on('error', reject)
+    req.write(JSON.stringify(body))
+    req.end()
+  })
+}
+
+function buildPrompt(existing, module, scene) {
+  const sceneNames = {
+    elevator: '电梯偶遇', pantry: '茶水间闲聊', canteen: '食堂搭话',
+    corridor: '走廊相遇', meeting: '会议发言', lunch: '午饭邀约',
+    dining: '商务餐', report: '向上汇报', review: '需求评审',
+    interview: '面试追问', 'cross-team': '跨部门协作',
+    conflict: '技术争议', performance: '绩效面谈'
+  }
+  const moduleName = module === 'daily' ? '日常接话' : '职场逻辑'
+  const sceneName = sceneNames[scene] || scene
+
+  let examples = ''
+  if (existing && existing.length > 0) {
+    examples = '\n\n已有题目（生成不同情境）：\n' +
+      existing.slice(0, 2).map((q, i) => `${i + 1}. ${q.situation}`).join('\n')
+  }
+
+  return `你是职场沟通培训师。为"${sceneName}"场景生成3道${moduleName}练习题。
+
+要求：
+1. situation（60字内）、4个选项ABCD
+2. A=2分(差)、B=5分(一般)、C=8分(好)、D=10分(优秀)
+3. content（30字内）、analysis（80字内）
+4. 情境真实有代表性，不要和已有重复${examples}
+
+返回JSON数组：
+[
+  {"situation":"...","options":[{"key":"A","content":"...","score":2,"analysis":"..."},...],"tips":"..."}
+]
+
+必须正好3道题，返回纯JSON。`
+}
+
+exports.main = async (event, context) => {
+  const { module, scene } = event
+
+  try {
+    // 获取已有题目
+    const { data: existing } = await db.collection(QUESTIONS_COLLECTION)
+      .where({ module, scene })
+      .limit(5).get()
+
+    // 获取API密钥
+    const apiKey = process.env.API_KEY
+    if (!apiKey) {
+      return { success: false, message: '请先配置API_KEY环境变量' }
+    }
+
+    // 调用AI
+    const response = await callAI(buildPrompt(existing, module, scene), apiKey)
+
+    if (response.error) {
+      throw new Error(response.error.message)
+    }
+
+    const content = response.choices[0].message.content
+    const questions = JSON.parse(content.match(/\[[\s\S]*\]/)[0])
+
+    if (!Array.isArray(questions) || questions.length !== 3) {
+      throw new Error('AI返回格式错误')
+    }
+
+    // 保存到数据库
     const now = new Date()
-    const insertPromises = questions.map(q => 
-      db.collection(QUESTIONS_COLLECTION).add({
+    const sceneNames = {
+      elevator: '电梯偶遇', pantry: '茶水间闲聊', canteen: '食堂搭话',
+      corridor: '走廊相遇', meeting: '会议发言', lunch: '午饭邀约',
+      dining: '商务餐', report: '向上汇报', review: '需求评审',
+      interview: '面试追问', 'cross-team': '跨部门协作',
+      conflict: '技术争议', performance: '绩效面谈'
+    }
+
+    for (const q of questions) {
+      await db.collection(QUESTIONS_COLLECTION).add({
         data: {
+          id: `${module}_${scene}_${Date.now()}_${Math.random().toString(36).substr(2, 6)}`,
           ...q,
           module,
           scene,
-          sceneName: getSceneName(scene),
+          sceneName: sceneNames[scene] || scene,
           createdAt: now,
           isAIGenerated: true
         }
       })
-    )
-    
-    await Promise.all(insertPromises)
-    
+    }
+
     return {
       success: true,
-      count: questions.length,
-      questions
+      count: 3,
+      questions: questions.map(q => ({ situation: q.situation }))
     }
-    */
 
   } catch (err) {
-    console.error('生成题目失败', err)
-    return {
-      success: false,
-      message: err.message || '生成失败'
-    }
+    console.error(err)
+    return { success: false, message: err.message || '生成失败' }
   }
-}
-
-function getSceneName(scene) {
-  const names = {
-    elevator: '电梯偶遇',
-    pantry: '茶水间闲聊',
-    canteen: '食堂搭话',
-    corridor: '走廊相遇',
-    meeting: '会议发言',
-    lunch: '午饭邀约',
-    dining: '商务餐',
-    report: '向上汇报',
-    review: '需求评审',
-    interview: '面试追问',
-    'cross-team': '跨部门协作',
-    conflict: '技术争议',
-    performance: '绩效面谈'
-  }
-  return names[scene] || scene
 }

@@ -1,5 +1,6 @@
 {
   "description": "接话与逻辑表达练习器",
+  "cloudfunctionRoot": "cloudfunctions/",
   "packOptions": {
     "ignore": [],
     "include": []
