@@ -7,41 +7,16 @@
   </view>
 
   <view class="scenes">
-    <view class="scene-item" bindtap="selectScene" data-scene="elevator">
-      <view class="scene-icon">🚪</view>
+    <block wx:for="{{scenes}}" wx:key="id">
+    <view class="scene-item" bindtap="selectScene" data-scene="{{item.id}}">
+      <view class="scene-icon">{{item.icon}}</view>
       <view class="scene-info">
-        <view class="scene-name">电梯偶遇</view>
-        <view class="scene-count">2道练习题</view>
+        <view class="scene-name">{{item.name}}</view>
+        <view class="scene-count">{{item.count}}道练习题</view>
       </view>
       <view class="scene-arrow">→</view>
     </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="pantry">
-      <view class="scene-icon">☕</view>
-      <view class="scene-info">
-        <view class="scene-name">茶水间闲聊</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="canteen">
-      <view class="scene-icon">🍜</view>
-      <view class="scene-info">
-        <view class="scene-name">食堂搭话</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="corridor">
-      <view class="scene-icon">🚶</view>
-      <view class="scene-info">
-        <view class="scene-name">走廊相遇</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
+    </block>
   </view>
 
   <view class="tips">

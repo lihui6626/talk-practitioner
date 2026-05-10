@@ -7,6 +7,8 @@ Page({
   },
 
   onLoad() {
+    console.log('questions.daily length:', questions.daily.length)
+
     // 统计每个场景的题目数量
     const sceneMap = {
       'elevator': { name: '电梯偶遇', icon: '🚪' },
@@ -22,7 +24,7 @@ Page({
       const count = questions.daily.filter(q => q.scene === id).length
       return { id, ...config, count }
     })
-    
+    console.log('scenes:', scenes)
     this.setData({ scenes })
   },
 
