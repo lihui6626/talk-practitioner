@@ -1,8 +1,9 @@
 <!--index.wxml-->
 <view class="container">
   <view class="header">
-    <view class="logo-text">谈吐</view>
+    <view class="logo-text">倾商<span class="highlight">UP</span></view>
     <view class="subtitle">接话与逻辑表达练习器</view>
+    <view class="motivation-tag">🎯 每天5分钟，情商一路UP</view>
   </view>
 
   <view class="modules">
