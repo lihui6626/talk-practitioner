@@ -7,41 +7,16 @@
   </view>
 
   <view class="scenes">
-    <view class="scene-item" bindtap="selectScene" data-scene="report">
-      <view class="scene-icon">📊</view>
+    <block wx:for="{{scenes}}" wx:key="id">
+    <view class="scene-item" bindtap="selectScene" data-scene="{{item.id}}">
+      <view class="scene-icon">{{item.icon}}</view>
       <view class="scene-info">
-        <view class="scene-name">向上汇报</view>
-        <view class="scene-count">2道练习题</view>
+        <view class="scene-name">{{item.name}}</view>
+        <view class="scene-count">{{item.count}}道练习题</view>
       </view>
       <view class="scene-arrow">→</view>
     </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="review">
-      <view class="scene-icon">📋</view>
-      <view class="scene-info">
-        <view class="scene-name">需求评审</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="interview">
-      <view class="scene-icon">🎯</view>
-      <view class="scene-info">
-        <view class="scene-name">面试追问</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
-
-    <view class="scene-item" bindtap="selectScene" data-scene="cross-team">
-      <view class="scene-icon">🤝</view>
-      <view class="scene-info">
-        <view class="scene-name">跨部门协作</view>
-        <view class="scene-count">2道练习题</view>
-      </view>
-      <view class="scene-arrow">→</view>
-    </view>
+    </block>
   </view>
 
   <view class="tips">
