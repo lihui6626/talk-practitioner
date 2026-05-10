@@ -1,0 +1,17 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/daily/daily",
+    "pages/workplace/workplace",
+    "pages/practice/practice",
+    "pages/result/result"
+  ],
+  "window": {
+    "navigationBarTitleText": "接话与逻辑表达练习器",
+    "navigationBarBackgroundColor": "#2C3E50",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#F8F9FA"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

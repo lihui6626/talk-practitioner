@@ -1,0 +1,125 @@
+<!--practice.wxml-->
+<view class="container" wx:if="{{question}}">
+  <!-- 场景信息 -->
+  <view class="scene-header">
+    <view class="scene-tag">
+      <text class="scene-icon">{{question.sceneIcon}}</text>
+      <text class="scene-name">{{question.sceneName}}</text>
+    </view>
+  </view>
+
+  <!-- 情境描述 -->
+  <view class="situation-card">
+    <view class="situation-label">情境</view>
+    <view class="situation-text">{{question.situation}}</view>
+  </view>
+
+  <!-- 选项列表 -->
+  <view class="options-section">
+    <view class="options-title">你会怎么说？</view>
+    <view class="option-item {{selectedKey === item.key ? 'selected' : ''}}"
+          wx:for="{{question.options}}"
+          wx:key="key"
+          bindtap="selectOption"
+          data-key="{{item.key}}">
+      <view class="option-key {{selectedKey === item.key ? 'selected' : ''}}">{{item.key}}</view>
+      <view class="option-content">{{item.content}}</view>
+    </view>
+  </view>
+
+  <!-- 确认按钮 -->
+  <view class="confirm-section" wx:if="{{selectedKey && !showResult}}">
+    <button class="confirm-btn" bindtap="confirmSelection">确认选择</button>
+  </view>
+
+  <!-- 结果展示 -->
+  <view class="result-section" wx:if="{{showResult}}">
+    <!-- 得分展示 -->
+    <view class="score-card">
+      <view class="score-label">你的选择</view>
+      <view class="score-key">选项 {{selectedOption.key}}</view>
+      <view class="score-value {{scoreClass}}">{{selectedOption.score}} 分</view>
+      <view class="score-desc">{{scoreDesc}}</view>
+    </view>
+
+    <!-- 深度分析 -->
+    <view class="analysis-card">
+      <view class="analysis-title">深度分析</view>
+      
+      <!-- 日常接话分析维度 -->
+      <view wx:if="{{module === 'daily'}}">
+        <view class="analysis-item">
+          <view class="analysis-item-title">情绪感知</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.emotion}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">话题承接</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.transition}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">话题延展</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.extension}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">情商体现</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.eq}}</view>
+        </view>
+      </view>
+
+      <!-- 职场逻辑分析维度 -->
+      <view wx:if="{{module === 'workplace'}}">
+        <view class="analysis-item">
+          <view class="analysis-item-title">结构清晰</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.structure}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">数据支撑</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.dataSupport}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">逻辑严谨</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.logic}}</view>
+        </view>
+        <view class="analysis-item">
+          <view class="analysis-item-title">预判能力</view>
+          <view class="analysis-item-content">{{selectedOption.analysis.prediction}}</view>
+        </view>
+      </view>
+
+      <view class="analysis-item overall">
+        <view class="analysis-item-title">综合评价</view>
+        <view class="analysis-item-content">{{selectedOption.analysis.overall}}</view>
+      </view>
+    </view>
+
+    <!-- 全部选项对比 -->
+    <view class="all-options-card">
+      <view class="analysis-title">全部选项解析</view>
+      <view class="all-options-list">
+        <view class="all-option-item {{item.key === selectedKey ? 'is-selected' : ''}}"
+              wx:for="{{question.options}}"
+              wx:key="key">
+          <view class="all-option-header">
+            <view class="all-option-key {{item.score >= 8 ? 'high' : (item.score >= 5 ? 'mid' : 'low')}}">{{item.key}}</view>
+            <view class="all-option-score {{item.score >= 8 ? 'high' : (item.score >= 5 ? 'mid' : 'low')}}">{{item.score}}分</view>
+            <view class="all-option-selected" wx:if="{{item.key === selectedKey}}">✓ 已选</view>
+          </view>
+          <view class="all-option-content">{{item.content}}</view>
+          <view class="all-option-analysis">{{item.analysis.overall}}</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 练习提示 -->
+    <view class="tips-card">
+      <view class="tips-icon">💡</view>
+      <view class="tips-content">{{question.tips}}</view>
+    </view>
+
+    <!-- 继续按钮 -->
+    <view class="action-buttons">
+      <button class="btn-secondary" bindtap="goBack">返回选择</button>
+      <button class="btn-primary" bindtap="nextQuestion">继续练习</button>
+    </view>
+  </view>
+</view>

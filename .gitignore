@@ -1,0 +1,15 @@
+# 微信小程序
+/.idea/
+/.vscode/
+*.log
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# 编译产物
+/dist/
+
+# 本地配置（包含 AppID 等敏感信息）
+project.private.config.json

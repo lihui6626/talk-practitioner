@@ -1,0 +1,42 @@
+<!--index.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="logo-text">谈吐</view>
+    <view class="subtitle">接话与逻辑表达练习器</view>
+  </view>
+
+  <view class="modules">
+    <view class="module-card" bindtap="goToDaily">
+      <view class="module-icon daily-icon">💬</view>
+      <view class="module-info">
+        <view class="module-title">日常接话练习</view>
+        <view class="module-desc">电梯、茶水间、食堂偶遇场景</view>
+        <view class="module-meta">
+          <text class="tag tag-orange">高情商</text>
+          <text class="tag">话题延展</text>
+        </view>
+      </view>
+      <view class="arrow">→</view>
+    </view>
+
+    <view class="module-card" bindtap="goToWorkplace">
+      <view class="module-icon workplace-icon">💼</view>
+      <view class="module-info">
+        <view class="module-title">职场逻辑表达</view>
+        <view class="module-desc">汇报、评审、面试、跨部门沟通</view>
+        <view class="module-meta">
+          <text class="tag tag-orange">结构化</text>
+          <text class="tag">数据说服</text>
+        </view>
+      </view>
+      <view class="arrow">→</view>
+    </view>
+  </view>
+
+  <view class="tip-section">
+    <view class="tip-title">💡 使用提示</view>
+    <view class="tip-item">每题4个选项，从最差到最优有梯度</view>
+    <view class="tip-item">选择后查看深度分析，理解底层逻辑</view>
+    <view class="tip-item">碎片化练习，每天进步一点点</view>
+  </view>
+</view>

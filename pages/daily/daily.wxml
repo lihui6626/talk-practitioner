@@ -1,0 +1,54 @@
+<!--daily.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="header-icon">💬</view>
+    <view class="header-title">日常接话练习</view>
+    <view class="header-desc">在电梯、茶水间、食堂等真实场景中练习自然接话</view>
+  </view>
+
+  <view class="scenes">
+    <view class="scene-item" bindtap="selectScene" data-scene="elevator">
+      <view class="scene-icon">🚪</view>
+      <view class="scene-info">
+        <view class="scene-name">电梯偶遇</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="pantry">
+      <view class="scene-icon">☕</view>
+      <view class="scene-info">
+        <view class="scene-name">茶水间闲聊</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="canteen">
+      <view class="scene-icon">🍜</view>
+      <view class="scene-info">
+        <view class="scene-name">食堂搭话</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="corridor">
+      <view class="scene-icon">🚶</view>
+      <view class="scene-info">
+        <view class="scene-name">走廊相遇</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+  </view>
+
+  <view class="tips">
+    <view class="tips-title">练习要点</view>
+    <view class="tips-item">情绪感知：准确捕捉对方情绪</view>
+    <view class="tips-item">话题承接：自然过渡不尴尬</view>
+    <view class="tips-item">话题延展：创造继续聊下去的空间</view>
+    <view class="tips-item">情商体现：得体、让人舒适</view>
+  </view>
+</view>

@@ -1,0 +1,9 @@
+<!--result.wxml-->
+<view class="container">
+  <view class="content">
+    <view class="icon">📝</view>
+    <view class="title">练习完成</view>
+    <view class="desc">感谢你的练习，继续保持进步！</view>
+    <button class="btn" bindtap="goHome">返回首页</button>
+  </view>
+</view>

@@ -1,0 +1,54 @@
+<!--workplace.wxml-->
+<view class="container">
+  <view class="header">
+    <view class="header-icon">💼</view>
+    <view class="header-title">职场逻辑表达</view>
+    <view class="header-desc">在汇报、评审、面试、跨部门沟通等场景中练习结构化表达</view>
+  </view>
+
+  <view class="scenes">
+    <view class="scene-item" bindtap="selectScene" data-scene="report">
+      <view class="scene-icon">📊</view>
+      <view class="scene-info">
+        <view class="scene-name">向上汇报</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="review">
+      <view class="scene-icon">📋</view>
+      <view class="scene-info">
+        <view class="scene-name">需求评审</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="interview">
+      <view class="scene-icon">🎯</view>
+      <view class="scene-info">
+        <view class="scene-name">面试追问</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+
+    <view class="scene-item" bindtap="selectScene" data-scene="cross-team">
+      <view class="scene-icon">🤝</view>
+      <view class="scene-info">
+        <view class="scene-name">跨部门协作</view>
+        <view class="scene-count">2道练习题</view>
+      </view>
+      <view class="scene-arrow">→</view>
+    </view>
+  </view>
+
+  <view class="tips">
+    <view class="tips-title">练习要点</view>
+    <view class="tips-item">结论先行：先说结论再说原因</view>
+    <view class="tips-item">逻辑结构：金字塔原理，分层清晰</view>
+    <view class="tips-item">数据支撑：用数据说话，而非主观判断</view>
+    <view class="tips-item">预判能力：提前预判并回应可能的质疑</view>
+  </view>
+</view>
