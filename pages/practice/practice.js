@@ -22,9 +22,8 @@ Page({
     const question = questionList.find(q => q.id === questionId)
     
     if (question) {
-      // 选项乱序
-      const shuffledOptions = this.shuffleArray([...question.options])
-      const shuffledQuestion = { ...question, options: shuffledOptions }
+      // 选项乱序并重新分配 key
+      const shuffledQuestion = this.shuffleOptions(question)
       this.setData({ question: shuffledQuestion })
     } else {
       wx.showToast({
@@ -37,13 +36,49 @@ Page({
     }
   },
 
+  // Fisher-Yates 洗牌算法 + 重新分配 key
+  shuffleOptions(question) {
+    const originalOptions = [...question.options]
+    
+    // 记录每个选项的实际分数（按原始分数排序）
+    const sortedByScore = [...originalOptions].sort((a, b) => b.score - a.score)
+    
+    // 打乱内容顺序
+    const shuffledContent = this.shuffleArray(originalOptions.map(opt => opt.content))
+    
+    // 随机分配内容给不同位置
+    const keys = ['A', 'B', 'C', 'D']
+    
+    // 方法：随机决定每个分数放在哪个位置
+    // 确保高分内容不一定在特定位置
+    const scorePositions = this.shuffleArray([0, 1, 2, 3])
+    
+    // 按打乱后的位置分配内容，但让内容顺序随机
+    const shuffledContentFinal = this.shuffleArray(shuffledContent)
+    
+    // 重新构建选项：新内容 + 原始分数/分析
+    const newOptions = shuffledContentFinal.map((content, index) => {
+      // 找到这个内容对应的原始选项，保留其分数和分析
+      const original = originalOptions.find(opt => opt.content === content)
+      return {
+        key: keys[index],
+        content: content,
+        score: original.score,
+        analysis: original.analysis
+      }
+    })
+    
+    return { ...question, options: newOptions }
+  },
+
   // Fisher-Yates 洗牌算法
   shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
+    const arr = [...array]
+    for (let i = arr.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]]
+      [arr[i], arr[j]] = [arr[j], arr[i]]
     }
-    return array
+    return arr
   },
 
   selectOption(e) {
@@ -108,9 +143,8 @@ Page({
     }
     
     const nextQuestion = questionList[nextIndex]
-    // 选项乱序
-    const shuffledOptions = this.shuffleArray([...nextQuestion.options])
-    const shuffledQuestion = { ...nextQuestion, options: shuffledOptions }
+    // 选项乱序并重新分配 key
+    const shuffledQuestion = this.shuffleOptions(nextQuestion)
     
     this.setData({
       question: shuffledQuestion,
