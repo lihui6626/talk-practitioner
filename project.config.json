@@ -6,6 +6,7 @@
   },
   "setting": {
     "urlCheck": false,
+    "lazyCodeLoading": "requiredComponents",
     "es6": true,
     "enhance": true,
     "postcss": true,
