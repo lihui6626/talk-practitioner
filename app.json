@@ -4,7 +4,8 @@
     "pages/daily/daily",
     "pages/workplace/workplace",
     "pages/practice/practice",
-    "pages/result/result"
+    "pages/result/result",
+    "pages/ai-expand/ai-expand"
   ],
   "window": {
     "navigationBarTitleText": "接话与逻辑表达练习器",
@@ -14,5 +15,6 @@
   },
   "lazyCodeLoading": "requiredComponents",
   "style": "v2",
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "cloud": true
 }

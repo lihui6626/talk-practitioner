@@ -84,6 +84,16 @@
   box-shadow: 0 8rpx 24rpx rgba(161, 196, 253, 0.4);
 }
 
+.ai-icon {
+  background: linear-gradient(135deg, #a8edea, #fed6e3);
+  box-shadow: 0 8rpx 24rpx rgba(168, 237, 234, 0.4);
+}
+
+.ai-card {
+  border: 2rpx dashed #667eea;
+  background: linear-gradient(135deg, #f5f7fa 0%, #fff 100%);
+}
+
 .module-info {
   flex: 1;
 }
@@ -118,6 +128,11 @@
 .tag-orange {
   background: rgba(255, 107, 107, 0.15);
   color: #FF6B6B;
+}
+
+.tag-blue {
+  background: rgba(102, 126, 234, 0.15);
+  color: #667eea;
 }
 
 .arrow {

@@ -1,0 +1,153 @@
+/* ai-expand.wxss */
+.container {
+  padding: 30rpx;
+}
+
+.header {
+  text-align: center;
+  padding: 40rpx 0;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 20rpx;
+  margin-bottom: 30rpx;
+}
+
+.header-icon {
+  font-size: 80rpx;
+  margin-bottom: 20rpx;
+}
+
+.header-title {
+  font-size: 36rpx;
+  font-weight: bold;
+  color: #fff;
+  margin-bottom: 10rpx;
+}
+
+.header-desc {
+  font-size: 26rpx;
+  color: rgba(255,255,255,0.8);
+}
+
+.tabs {
+  display: flex;
+  background: #f0f0f0;
+  border-radius: 15rpx;
+  padding: 8rpx;
+  margin-bottom: 30rpx;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  padding: 20rpx 0;
+  font-size: 28rpx;
+  color: #666;
+  border-radius: 10rpx;
+  transition: all 0.3s;
+}
+
+.tab.active {
+  background: #fff;
+  color: #667eea;
+  font-weight: bold;
+  box-shadow: 0 2rpx 10rpx rgba(0,0,0,0.1);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.scenes-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20rpx;
+  margin-bottom: 40rpx;
+}
+
+.scene-card {
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  text-align: center;
+  box-shadow: 0 4rpx 15rpx rgba(0,0,0,0.08);
+  border: 4rpx solid transparent;
+  transition: all 0.3s;
+}
+
+.scene-card.selected {
+  border-color: #667eea;
+  background: linear-gradient(135deg, #667eea10 0%, #764ba210 100%);
+}
+
+.scene-icon {
+  font-size: 50rpx;
+  margin-bottom: 15rpx;
+}
+
+.scene-name {
+  font-size: 28rpx;
+  color: #333;
+  font-weight: bold;
+  margin-bottom: 10rpx;
+}
+
+.scene-count {
+  font-size: 24rpx;
+  color: #999;
+}
+
+.action-section {
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 30rpx;
+  margin-bottom: 30rpx;
+  text-align: center;
+}
+
+.selected-info {
+  font-size: 28rpx;
+  color: #667eea;
+  margin-bottom: 20rpx;
+}
+
+.generate-btn {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 30rpx;
+  padding: 25rpx 0;
+  border-radius: 50rpx;
+  border: none;
+}
+
+.generate-btn::after {
+  border: none;
+}
+
+.message {
+  font-size: 26rpx;
+  color: #666;
+  margin-top: 20rpx;
+}
+
+.tips-section {
+  background: #fff;
+  border-radius: 15rpx;
+  padding: 30rpx;
+}
+
+.tips-title {
+  font-size: 28rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.tips-item {
+  font-size: 26rpx;
+  color: #666;
+  line-height: 1.8;
+  margin-bottom: 10rpx;
+}
